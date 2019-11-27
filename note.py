@@ -1,6 +1,7 @@
 from peewee import *
 import datetime
 import pyfiglet
+import sys
 db = PostgresqlDatabase('note', user='postgres', password='',
                         host='localhost', port=5432)
 db.connect() 
@@ -35,7 +36,7 @@ def app_intro():
 # app_intro()
 
 def get_user():
-    user_name = str(input("Please enter your full name: "))
+    user_name = str(input("\nPlease enter your full name: "))
     new_user = Person(full_name=user_name)
     new_user.save()
     return user_name
@@ -44,26 +45,42 @@ def get_user():
     # create note content
     # user should be able to view all notes
     # user should be able to find a specific note
-def get_selection():
-    selection = str(input("To create a note enter CREATE\nTo view all notes enter VIEW\nTo find a specific note enter FIND\nEnter your selection: "))
+def get_selection(username):
+    print(f'\n\nHello {username}!\n')
+    selection = str(input("\nTo create a note enter CREATE\nTo view all notes enter VIEW\nTo find a specific note enter FIND\nEnter your selection: "))
     if selection == 'CREATE':
-        start_create()
+        start_create(username)
     # elif selection == 'VIEW':
     #     # start view()
     # elif selection == 'FIND':
     #     # start find()
 
 def start_create(username):
-    title = str(input("What would you like to title your note as? "))
-    content = str(input("Write your note: "))
+    title = str(input("\nWhat would you like to title your note as? "))
+    content = str(input("\nWrite your note: "))
     date = datetime.datetime.now()
     new_note = Note(note_title=title, 
                     note_content=content, 
                     date_created=date, 
                     user_name=username)
     new_note.save()
+    print(f'\n{date}\n{title}\n---\n{content}\n---')
+    new_selection = str(input("\nWould you like to create a new note or return to the main menu? (CREATE or MENU. q to exit): "))
+    if new_selection == "CREATE":
+        start_create(username)
+    elif new_selection == "MENU":
+        get_selection(username)
+    elif new_selection == "q":
+        sys.exit(0)
 
 
-    
+def start_app():
+    app_intro()
+    username = get_user()
+    get_selection(username)
 
-start_create("Tyler Eikenberg")
+start_app()    
+
+# loop = asyncio.get_event_loop()
+# loop.run_until_complete(start_app())
+# loop.close()
