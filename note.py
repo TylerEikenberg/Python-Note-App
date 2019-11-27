@@ -38,25 +38,29 @@ def get_user():
     # new_user.save()
     # return user_name
     user_name = str(input("\nPlease enter your full name: "))
+    print(f'\n\nHello {user_name}!\n')
     user_exists = Person.select().where(Person.full_name == user_name)
     if (not user_exists):
         new_user = Person(full_name=user_name)
         new_user.save()
     elif(user_exists):
-        Note.select().where(Note.user_name == user_name)
-        # print(f'\nHere are your current notes:\n{notes}')
+        notes = Note.select().where(Note.user_name == user_name)
+        print('Here are your current notes:\n ')
+        for note in notes:
+            print(f'---\n{note.date_created}\n{note.note_title}\n{note.note_content}')
+        # print(f'\nHere are your current notes:\n{notes[1].note_content}')
     return user_name
 
 def get_selection(username):
-    print(f'\n\nHello {username}!\n')
     selection = str(input("\nTo create a note enter CREATE\nTo view all notes enter VIEW\nTo find a specific note enter FIND\nEnter your selection: "))
     if selection == 'CREATE':
         start_create(username)
-    # elif selection == 'VIEW':
-    #     # start view()
+    elif selection == 'VIEW':
+        view_notes(username)
     # elif selection == 'FIND':
     #     # start find()
 
+# Function for creating a note
 def start_create(username):
     title = str(input("\nWhat would you like to title your note as? "))
     content = str(input("\nWrite your note: "))
@@ -74,7 +78,12 @@ def start_create(username):
         get_selection(username)
     elif new_selection == "q":
         sys.exit(0)
-
+# Function for viewing notes
+def view_notes(username):
+    # ask user if they'd like to see all notes or view a specific note
+    # when viewing note ask what they'd like to do with note:
+    #   update delete or exit
+    print('view note')
 
 def start_app():
     app_intro()
