@@ -19,6 +19,7 @@ class Person(BaseModel):
 
 class Note(BaseModel):
     date_created = DateField()
+    note_title = CharField()
     note_content = TextField()
 
 db.create_tables([Person, Note])
@@ -37,4 +38,23 @@ def get_user():
     new_user = Person(full_name=user_name)
     new_user.save()
 
-get_user()
+    # create note title
+    # create note content
+    # user should be able to view all notes
+    # user should be able to find a specific note
+def get_selection():
+    selection = str(input("To create a note enter CREATE\nTo view all notes enter VIEW\nTo find a specific note enter FIND\nEnter your selection: "))
+    if selection == 'CREATE':
+        # start create()
+    elif selection == 'VIEW':
+        # start view()
+    elif selection == 'FIND':
+        # start find()
+
+def start_create():
+    note_title = str(input("What would you like to title your note as? "))
+
+    
+    
+
+get_selection()
