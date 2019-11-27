@@ -33,8 +33,12 @@ def app_intro():
     print(subtitle)
 # get users name
 def get_user():
+    # user_name = str(input("\nPlease enter your full name: "))
+    # new_user = Person(full_name=user_name)
+    # new_user.save()
+    # return user_name
     user_name = str(input("\nPlease enter your full name: "))
-    user_exists = Person.get(full_name = user_name)
+    user_exists = Person.select().where(Person.full_name == user_name)
     if (not user_exists):
         new_user = Person(full_name=user_name)
         new_user.save()
