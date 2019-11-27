@@ -1,5 +1,5 @@
 from peewee import *
-from datetime import date
+import datetime
 import pyfiglet
 db = PostgresqlDatabase('note', user='postgres', password='',
                         host='localhost', port=5432)
@@ -18,9 +18,10 @@ class Person(BaseModel):
     full_name = CharField()
 
 class Note(BaseModel):
-    date_created = DateField()
     note_title = CharField()
     note_content = TextField()
+    date_created = CharField()
+    user_name = CharField()
 
 db.create_tables([Person, Note])
 
@@ -37,6 +38,7 @@ def get_user():
     user_name = str(input("Please enter your full name: "))
     new_user = Person(full_name=user_name)
     new_user.save()
+    return user_name
 
     # create note title
     # create note content
@@ -45,16 +47,23 @@ def get_user():
 def get_selection():
     selection = str(input("To create a note enter CREATE\nTo view all notes enter VIEW\nTo find a specific note enter FIND\nEnter your selection: "))
     if selection == 'CREATE':
-        # start create()
-    elif selection == 'VIEW':
-        # start view()
-    elif selection == 'FIND':
-        # start find()
+        start_create()
+    # elif selection == 'VIEW':
+    #     # start view()
+    # elif selection == 'FIND':
+    #     # start find()
 
-def start_create():
-    note_title = str(input("What would you like to title your note as? "))
+def start_create(username):
+    title = str(input("What would you like to title your note as? "))
+    content = str(input("Write your note: "))
+    date = datetime.datetime.now()
+    new_note = Note(note_title=title, 
+                    note_content=content, 
+                    date_created=date, 
+                    user_name=username)
+    new_note.save()
+
 
     
-    
 
-get_selection()
+start_create("Tyler Eikenberg")
