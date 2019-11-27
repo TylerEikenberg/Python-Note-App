@@ -30,5 +30,11 @@ def app_intro():
     subtitle = "--A Python note-taking application--\n-\n-"
     print(title)
     print(subtitle)
-app_intro()
-# def get_user()
+# app_intro()
+
+def get_user():
+    user_name = str(input("Please enter your full name: "))
+    new_user = Person(full_name=user_name)
+    new_user.save()
+
+get_user()
