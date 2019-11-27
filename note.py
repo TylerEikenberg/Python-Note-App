@@ -7,13 +7,10 @@ db = PostgresqlDatabase('note', user='postgres', password='',
 db.connect() 
 # pipenv run python note.py 
 
+# Note db Models ------------------------------------
 class BaseModel(Model):
     class Meta:
         database = db
-
-# note taking app
-# model for people
-# model for notes
 
 class Person(BaseModel):
     full_name = CharField()
@@ -25,26 +22,27 @@ class Note(BaseModel):
     user_name = CharField()
 
 db.create_tables([Person, Note])
+# --------------------------------------------------
 
-# prompt user for full name, create Person from name
 
+# intro to app
 def app_intro():
     title = pyfiglet.figlet_format("PyThoughts")
     subtitle = "--A Python note-taking application--\n-\n-"
     print(title)
     print(subtitle)
-# app_intro()
-
+# get users name
 def get_user():
     user_name = str(input("\nPlease enter your full name: "))
-    new_user = Person(full_name=user_name)
-    new_user.save()
+    user_exists = Person.get(full_name = user_name)
+    if (not user_exists):
+        new_user = Person(full_name=user_name)
+        new_user.save()
+    elif(user_exists):
+        Note.select().where(Note.user_name == user_name)
+        # print(f'\nHere are your current notes:\n{notes}')
     return user_name
 
-    # create note title
-    # create note content
-    # user should be able to view all notes
-    # user should be able to find a specific note
 def get_selection(username):
     print(f'\n\nHello {username}!\n')
     selection = str(input("\nTo create a note enter CREATE\nTo view all notes enter VIEW\nTo find a specific note enter FIND\nEnter your selection: "))
@@ -81,6 +79,8 @@ def start_app():
 
 start_app()    
 
-# loop = asyncio.get_event_loop()
-# loop.run_until_complete(start_app())
-# loop.close()
+#   todo  
+#   user should be able to view all notes
+#   user should be able to find a specific note
+
+
