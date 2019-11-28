@@ -38,16 +38,14 @@ def get_user():
     # new_user.save()
     # return user_name
     user_name = str(input("\nPlease enter your full name: "))
-    print(f'\n\nHello {user_name}!\n')
+    print(f'\n\nHello, {user_name}!\n')
     user_exists = Person.select().where(Person.full_name == user_name)
     if (not user_exists):
         new_user = Person(full_name=user_name)
         new_user.save()
     elif(user_exists):
-        notes = Note.select().where(Note.user_name == user_name)
-        print('Here are your current notes:\n ')
-        for note in notes:
-            print(f'---\n{note.date_created}\n{note.note_title}\n{note.note_content}')
+        notes_count = Note.select().where(Note.user_name == user_name).count()
+        print(f'You have {notes_count} notes.')
         # print(f'\nHere are your current notes:\n{notes[1].note_content}')
     return user_name
 
@@ -90,8 +88,11 @@ def view_notes(username):
         notes = Note.select().where(Note.user_name == username)
         print('\nHere are your current notes:\n ')
         for note in notes:
-            print(f'---\n{note.date_created}\n{note.note_title}\n{note.note_content}')
-
+            print(f'---\nid:{note.id}\n{note.date_created}\n{note.note_title}\n{note.note_content}')
+    elif selection == 'FIND':
+        note_id = str(input('Enter the id number of that note you would like to view: '))
+        # found_note = Note.select().where(Note.id == note_id) search by keyword
+        print(f'\nid:{found_note.id}\n{found_note.date_created}\n{found_note.note_title}\n{found_note.note_content}')
 
 def start_app():
     app_intro()
