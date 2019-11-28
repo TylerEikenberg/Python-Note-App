@@ -49,13 +49,11 @@ def get_user():
     return user_name
 
 def get_selection(username):
-    selection = str(input("\nTo create a note enter CREATE\nTo view all notes enter VIEW\nTo find a specific note enter FIND\nEnter your selection: ")).upper()
+    selection = str(input("\nTo create a note enter CREATE\nTo view all notes enter VIEW\nEnter your selection: ")).upper()
     if selection == 'CREATE':
         start_create(username)
     elif selection == 'VIEW':
         view_notes(username)
-    # elif selection == 'FIND':
-    #     # start find()
 
 # Function for creating a note
 def start_create(username):
@@ -96,6 +94,13 @@ def view_notes(username):
         if new_selection == 'DELETE':
             found_note.delete_instance()
             print(f'\nNote {note_id} deleted')
+            get_selection(username)
+        elif new_selection == 'EDIT':
+            edit = str(input('Write your note: '))
+            found_note.note_content = edit
+            found_note.save()
+            print(f'\nid:{found_note.id}\n{found_note.date_created}\n{found_note.note_title}\n{found_note.note_content}')
+        elif new_selection =='MENU':
             get_selection(username)
 
 def start_app():
