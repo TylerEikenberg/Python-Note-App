@@ -78,12 +78,20 @@ def start_create(username):
         get_selection(username)
     elif new_selection == "q":
         sys.exit(0)
+
+
 # Function for viewing notes
 def view_notes(username):
     # ask user if they'd like to see all notes or view a specific note
     # when viewing note ask what they'd like to do with note:
     #   update delete or exit
-    print('view note')
+    selection = str(input('To view all notes enter ALL\nTo view a specific note enter FIND: '))
+    if selection == 'ALL':
+        notes = Note.select().where(Note.user_name == username)
+        print('\nHere are your current notes:\n ')
+        for note in notes:
+            print(f'---\n{note.date_created}\n{note.note_title}\n{note.note_content}')
+
 
 def start_app():
     app_intro()
