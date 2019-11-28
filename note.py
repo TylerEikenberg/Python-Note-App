@@ -57,7 +57,7 @@ def get_selection(username):
 
 # Function for creating a note
 def start_create(username):
-    title = str(input("\nWhat would you like to title your note as? "))
+    title = str(input("\nWhat would you like to title your note as? ")).title()
     content = str(input("\nWrite your note: "))
     date = datetime.datetime.now()
     new_note = Note(note_title=title, 
@@ -66,7 +66,7 @@ def start_create(username):
                     user_name=username)
     new_note.save()
     print(f'\n{date}\n{title}\n---\n{content}\n---')
-    new_selection = str(input("\nWould you like to create a new note or return to the main menu? (CREATE or MENU. q to exit): "))
+    new_selection = str(input("\nWould you like to create a new note or return to the main menu? (CREATE or MENU. q to exit): ")).upper()
     if new_selection == "CREATE":
         start_create(username)
     elif new_selection == "MENU":
@@ -100,6 +100,7 @@ def view_notes(username):
             found_note.note_content = edit
             found_note.save()
             print(f'\nid:{found_note.id}\n{found_note.date_created}\n{found_note.note_title}\n{found_note.note_content}')
+            get_selection(username)
         elif new_selection =='MENU':
             get_selection(username)
 
@@ -110,8 +111,5 @@ def start_app():
 
 start_app()    
 
-#   todo  
-#   user should be able to view all notes
-#   user should be able to find a specific note
 
 
