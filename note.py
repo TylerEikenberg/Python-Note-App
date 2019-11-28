@@ -82,20 +82,21 @@ def view_notes(username):
     # ask user if they'd like to see all notes or view a specific note
     # when viewing note ask what they'd like to do with note:
     #   update delete or exit
-    selection = str(input('To view all notes enter ALL\nTo view a specific note enter FIND: ')).upper()
+    selection = str(input('\nTo view all notes enter ALL\nTo view a specific note enter FIND: ')).upper()
     if selection == 'ALL':
         notes = Note.select().where(Note.user_name == username)
         print('\nHere are your current notes:\n ')
         for note in notes:
             print(f'---\nid:{note.id}\n{note.date_created}\n{note.note_title}\n{note.note_content}')
     elif selection == 'FIND':
-        note_id = str(input('Enter the id number of that note you would like to view: '))
+        note_id = str(input('\nEnter the id number of that note you would like to view: '))
         found_note = Note.get(Note.id == note_id)
         print(f'\nid:{found_note.id}\n{found_note.date_created}\n{found_note.note_title}\n{found_note.note_content}')
-        new_selection = str("\nDo you want to edit or delete this note, or return to the menu?(DELETE/EDIT/MENU)")
+        new_selection = str(input("\nDo you want to edit or delete this note, or return to the menu?(DELETE/EDIT/MENU): ")).upper()
         if new_selection == 'DELETE':
             found_note.delete_instance()
             print(f'\nNote {note_id} deleted')
+            get_selection(username)
 
 def start_app():
     app_intro()
