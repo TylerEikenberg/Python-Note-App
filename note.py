@@ -37,7 +37,7 @@ def get_user():
     # new_user = Person(full_name=user_name)
     # new_user.save()
     # return user_name
-    user_name = str(input("\nPlease enter your full name: "))
+    user_name = str(input("\nPlease enter your full name: ")).title()
     print(f'\n\nHello, {user_name}!\n')
     user_exists = Person.select().where(Person.full_name == user_name)
     if (not user_exists):
@@ -46,11 +46,10 @@ def get_user():
     elif(user_exists):
         notes_count = Note.select().where(Note.user_name == user_name).count()
         print(f'You have {notes_count} notes.')
-        # print(f'\nHere are your current notes:\n{notes[1].note_content}')
     return user_name
 
 def get_selection(username):
-    selection = str(input("\nTo create a note enter CREATE\nTo view all notes enter VIEW\nTo find a specific note enter FIND\nEnter your selection: "))
+    selection = str(input("\nTo create a note enter CREATE\nTo view all notes enter VIEW\nTo find a specific note enter FIND\nEnter your selection: ")).upper()
     if selection == 'CREATE':
         start_create(username)
     elif selection == 'VIEW':
@@ -83,7 +82,7 @@ def view_notes(username):
     # ask user if they'd like to see all notes or view a specific note
     # when viewing note ask what they'd like to do with note:
     #   update delete or exit
-    selection = str(input('To view all notes enter ALL\nTo view a specific note enter FIND: '))
+    selection = str(input('To view all notes enter ALL\nTo view a specific note enter FIND: ')).upper()
     if selection == 'ALL':
         notes = Note.select().where(Note.user_name == username)
         print('\nHere are your current notes:\n ')
@@ -91,8 +90,12 @@ def view_notes(username):
             print(f'---\nid:{note.id}\n{note.date_created}\n{note.note_title}\n{note.note_content}')
     elif selection == 'FIND':
         note_id = str(input('Enter the id number of that note you would like to view: '))
-        # found_note = Note.select().where(Note.id == note_id) search by keyword
+        found_note = Note.get(Note.id == note_id)
         print(f'\nid:{found_note.id}\n{found_note.date_created}\n{found_note.note_title}\n{found_note.note_content}')
+        new_selection = str("\nDo you want to edit or delete this note, or return to the menu?(DELETE/EDIT/MENU)")
+        if new_selection == 'DELETE':
+            found_note.delete_instance()
+            print(f'\nNote {note_id} deleted')
 
 def start_app():
     app_intro()
