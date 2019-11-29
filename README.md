@@ -19,7 +19,9 @@ git clone git@github.com:TylerEikenberg/Python-Note-App.git
 ```
 2. Install the required packages found in __Pipfile__  
 
-3. Run the project 
+3. In PSQL you'll need a database called __note__.  
+
+4. Run the project 
 ```
 pipenv run python note.py
 ```
