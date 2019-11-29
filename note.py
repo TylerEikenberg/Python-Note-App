@@ -23,7 +23,7 @@ class Note(BaseModel):
 
 db.create_tables([Person, Note])
 # --------------------------------------------------
-
+# --------------------------------------------------
 
 # intro to app
 def app_intro():
@@ -86,23 +86,30 @@ def view_notes(username):
         print('\nHere are your current notes:\n ')
         for note in notes:
             print(f'---\nid:{note.id}\n{note.date_created}\n{note.note_title}\n{note.note_content}')
+        get_selection(username)    
     elif selection == 'FIND':
         note_id = str(input('\nEnter the id number of that note you would like to view: '))
-        found_note = Note.get(Note.id == note_id)
-        print(f'\nid:{found_note.id}\n{found_note.date_created}\n{found_note.note_title}\n{found_note.note_content}')
-        new_selection = str(input("\nDo you want to edit or delete this note, or return to the menu?(DELETE/EDIT/MENU): ")).upper()
-        if new_selection == 'DELETE':
-            found_note.delete_instance()
-            print(f'\nNote {note_id} deleted')
-            get_selection(username)
-        elif new_selection == 'EDIT':
-            edit = str(input('Write your note: '))
-            found_note.note_content = edit
-            found_note.save()
+        try:
+            found_note = Note.get(Note.id == note_id, Note.user_name == username)
             print(f'\nid:{found_note.id}\n{found_note.date_created}\n{found_note.note_title}\n{found_note.note_content}')
-            get_selection(username)
-        elif new_selection =='MENU':
-            get_selection(username)
+            new_selection = str(input("\nDo you want to edit or delete this note, or return to the menu?(DELETE/EDIT/MENU): ")).upper()
+            if new_selection == 'DELETE':
+                found_note.delete_instance()
+                print(f'\nNote {note_id} deleted')
+                get_selection(username)
+            elif new_selection == 'EDIT':
+                edit = str(input('Write your note: '))
+                found_note.note_content = edit
+                found_note.save()
+                print(f'\nid:{found_note.id}\n{found_note.date_created}\n{found_note.note_title}\n{found_note.note_content}')
+                get_selection(username)
+            elif new_selection =='MENU':
+                get_selection(username)
+        except:
+            print('\nThat note does not belong to you. Try searching again.')
+            view_notes(username)
+            
+        
 
 def start_app():
     app_intro()
