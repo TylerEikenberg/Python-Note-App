@@ -1,4 +1,4 @@
-# PyThought  
+# PyThoughts
 A Python note taking application in your command line.
 ![PyThought](./assets/pythoughts1.gif)
 
